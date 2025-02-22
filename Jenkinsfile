@@ -1,12 +1,12 @@
 pipeline {
     agent any
 
-    // environment {
-    //     DOCKER_IMAGE_NAME = 'spring-petclinic'
-    //     DOCKERHUB_USERNAME = 'santhoshgullapudi' // Replace with your DockerHub username
-    //     DOCKERHUB_PASSWORD = credentials('Sanu*2710D') // Jenkins credentials for DockerHub password
-    //     DOCKER_TAG = 'latest' // You can modify this to use dynamic versioning
-    // }
+    environment {
+        DOCKER_IMAGE_NAME = 'spring-petclinic'
+        DOCKERHUB_USERNAME = 'santhoshgullapudi' // Replace with your DockerHub username
+        DOCKERHUB_PASSWORD = 'Sanu*2710D' // Jenkins credentials for DockerHub password
+        DOCKER_TAG = 'latest' // You can modify this to use dynamic versioning
+    }
 
     stages {
         stage('Checkout') {
@@ -27,16 +27,16 @@ pipeline {
 
         // Uncomment and modify below stages as needed
 
-//         stage('Build Docker Image') {
-//             steps {
-//                 script {
-//                     // Build Docker image
-//                     sh """
-//                     docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
-//                     """
-//                 }
-//             }
-//         }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image
+                    sh """
+                    docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
+                    """
+                }
+            }
+        }
 
 //         stage('Login to DockerHub') {
 //             steps {
