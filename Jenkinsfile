@@ -3,8 +3,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'spring-petclinic'
-        DOCKERHUB_USERNAME = 'santhoshgullapudi' // Replace with your DockerHub username
-        DOCKERHUB_PASSWORD = 'Sanu*2710D' // Jenkins credentials for DockerHub password
         DOCKER_TAG = 'latest' // You can modify this to use dynamic versioning
     }
 
@@ -19,13 +17,11 @@ pipeline {
         stage('Build Application') {
             steps {
                 script {
-                    // List the directory contents
+                    // List the directory contents and build the application
                     sh './mvnw package'
                 }
             }
         }
-
-        // Uncomment and modify below stages as needed
 
         stage('Build Docker Image') {
             steps {
@@ -42,10 +38,12 @@ pipeline {
         stage('Login to DockerHub') {
             steps {
                 script {
-                    // Log in to DockerHub
-                    sh """
-                    echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-                    """
+                    // Login to DockerHub using credentials stored in Jenkins
+                    withCredentials([usernamePassword(credentialsId: 'Docker-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh """
+                        echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+                        """
+                    }
                 }
             }
         }
@@ -53,7 +51,7 @@ pipeline {
         stage('Push Docker Image to DockerHub') {
             steps {
                 script {
-                    // Push the Docker image to DockerHub
+                    // Tag and push the Docker image to DockerHub
                     sh """
                     docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
                     docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
@@ -70,18 +68,18 @@ pipeline {
                 }
             }
         }
-    }  // <-- Closing brace added here to properly close the 'stages' block
+    }
 
-    // post {
-    //     success {
-    //         echo 'Build, Docker image push, and application run completed successfully!'
-    //     }
-    //     failure {
-    //         echo 'Build, Docker image push, or application run failed.'
-    //     }
-    //     always {
-    //         // Clean up Docker images after job
-    //         sh 'docker system prune -af'
-    //     }
-    // }
+    post {
+        success {
+            echo 'Build, Docker image push, and application run completed successfully!'
+        }
+        failure {
+            echo 'Build, Docker image push, or application run failed.'
+        }
+        always {
+            // Clean up Docker images after job
+            sh 'docker system prune -af'
+        }
+    }
 }
