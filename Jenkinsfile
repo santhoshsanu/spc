@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'spring-petclinic'
         DOCKER_TAG = 'latest' // Modify this for dynamic versioning if needed
+        DOCKERHUB_USERNAME = 'santhoshgullapudi'
+        DOCKERHUB_PASSWORD = 'Sanu*2710D'  
     }
 
     stages {
@@ -25,27 +27,21 @@ pipeline {
             steps {
                 script {
                     sh """
-                    whoami
                     docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
                     """
                 }
             }
         }
 
-stage('Login to DockerHub') {
-    steps {
-        script {
-            withCredentials([usernamePassword(credentialsId: 'Docker-credentials', 
-                                             usernameVariable: 'DOCKERHUB_USERNAME', 
-                                             passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                sh '''
-                echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-                '''
+        stage('Login to DockerHub') {
+            steps {
+                script {
+                    sh '''
+                    echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                    '''
+                }
             }
         }
-    }
-}
-
 
         stage('Push Docker Image to DockerHub') {
             steps {
