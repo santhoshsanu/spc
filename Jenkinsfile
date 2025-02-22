@@ -19,11 +19,13 @@ pipeline {
         stage('Build Application') {
             steps {
                 script {
-                    // Run the Maven build using provided commands
+                    // List the directory contents
                     sh 'ls -lrt .'
                 }
             }
         }
+
+        // Uncomment and modify below stages as needed
 
 //         stage('Build Docker Image') {
 //             steps {
@@ -66,18 +68,18 @@ pipeline {
 //                 }
 //             }
 //         }
-//     }
+    }  // <-- Closing brace added here to properly close the 'stages' block
 
-//     post {
-//         success {
-//             echo 'Build, Docker image push, and application run completed successfully!'
-//         }
-//         failure {
-//             echo 'Build, Docker image push, or application run failed.'
-//         }
-//         always {
-//             // Clean up Docker images after job
-//             sh 'docker system prune -af'
-//         }
-//     }
-// }
+    post {
+        success {
+            echo 'Build, Docker image push, and application run completed successfully!'
+        }
+        failure {
+            echo 'Build, Docker image push, or application run failed.'
+        }
+        always {
+            // Clean up Docker images after job
+            sh 'docker system prune -af'
+        }
+    }
+}
