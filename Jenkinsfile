@@ -36,7 +36,7 @@ pipeline {
         }
 
 
-        stage('Login to DockerHub') {
+        stage('Login to Docker') {
             steps {
                 script {
                     // Login to DockerHub using credentials stored in Jenkins
