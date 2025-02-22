@@ -56,7 +56,7 @@ pipeline {
                     // Push the Docker image to DockerHub
                     sh """
                     docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
-                    docker push $DOCKER_IMAGE_NAME:$DOCKER_TAG
+                    docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
                     """
                 }
             }
