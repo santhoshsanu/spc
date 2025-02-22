@@ -39,36 +39,36 @@ pipeline {
             }
         }
 
-//         stage('Login to DockerHub') {
-//             steps {
-//                 script {
-//                     // Log in to DockerHub
-//                     sh """
-//                     echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-//                     """
-//                 }
-//             }
-//         }
+        stage('Login to DockerHub') {
+            steps {
+                script {
+                    // Log in to DockerHub
+                    sh """
+                    echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+                    """
+                }
+            }
+        }
 
-//         stage('Push Docker Image to DockerHub') {
-//             steps {
-//                 script {
-//                     // Push the Docker image to DockerHub
-//                     sh """
-//                     docker push $DOCKER_IMAGE_NAME:$DOCKER_TAG
-//                     """
-//                 }
-//             }
-//         }
+        stage('Push Docker Image to DockerHub') {
+            steps {
+                script {
+                    // Push the Docker image to DockerHub
+                    sh """
+                    docker push $DOCKER_IMAGE_NAME:$DOCKER_TAG
+                    """
+                }
+            }
+        }
 
-//         stage('Run Application') {
-//             steps {
-//                 script {
-//                     // Run the application using the jar file from target/
-//                     sh 'java -jar target/*.jar'
-//                 }
-//             }
-//         }
+        stage('Run Application') {
+            steps {
+                script {
+                    // Run the application using the jar file from target/
+                    sh 'docker run -d -p 8090:8080 $DOCKER_IMAGE_NAME:$DOCKER_TAG'
+                }
+            }
+        }
     }  // <-- Closing brace added here to properly close the 'stages' block
 
     // post {
