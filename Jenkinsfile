@@ -32,6 +32,7 @@ pipeline {
                 script {
                     // Build Docker image
                     sh """
+                    whoami
                     docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
                     """
                 }
