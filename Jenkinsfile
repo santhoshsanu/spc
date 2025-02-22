@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // List the directory contents
-                    sh 'ls -lrt .'
+                    sh './mvnw package'
                 }
             }
         }
