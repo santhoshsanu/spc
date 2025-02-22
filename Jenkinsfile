@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the Spring PetClinic repository
-                git 'https://github.com/santhoshsanu/spc.git'
+                git branch: 'main', url: 'https://github.com/santhoshsanu/spc.git'
             }
         }
 
